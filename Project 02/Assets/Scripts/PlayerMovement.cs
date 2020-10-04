@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public CharacterController controller;
+    UIManager uiManager;
 
     public float speed = 12f;
     public float gravity = -9.81f;
@@ -18,6 +19,11 @@ public class PlayerMovement : MonoBehaviour
     bool isGrounded;
 
     // Update is called once per frame
+
+    private void Awake()
+    {
+        uiManager = FindObjectOfType<UIManager>();
+    }
     void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
@@ -40,5 +46,10 @@ public class PlayerMovement : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
 
         controller.Move(velocity * Time.deltaTime);
+    }
+
+    public void kill()
+    {
+        this.gameObject.SetActive(false);
     }
 }

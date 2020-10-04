@@ -8,14 +8,19 @@ public class Level01Controller : MonoBehaviour
 {
     [SerializeField] Text _currentScoreTextView;
 
-    int _currentScore;
+    public static int _currentScore;
+
+    private void Start()
+    {
+        
+    }
     private void Update()
     {
         //TO DO: bring up pop up menu
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            ExitLevel();
-        }
+        //if (Input.GetKeyDown(KeyCode.Escape))
+        //{
+          //  ExitLevel();
+       // }
         //increase score
         //TO DO: replace w implementation
         if(Input.GetKeyDown(KeyCode.Q))
@@ -44,4 +49,11 @@ public class Level01Controller : MonoBehaviour
         //update screen display
         _currentScoreTextView.text = "Score: " + _currentScore.ToString();
     }
+
+    public void ResetScore()
+    {
+        _currentScore = 0;
+        _currentScoreTextView.text = "Score: " + _currentScore.ToString();
+    }
+    
 }
