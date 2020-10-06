@@ -9,27 +9,28 @@ public class UIManager : MonoBehaviour
     
 
     public Slider healthSlider;
-    public PlayerHealth playerHealth;
-
+    public PlayerHealth _health;
+  
 
     //TO DO: Add dead screen
 
-
+   
 
     private void Start()
     {
 
     }
 
-
     public void UpdateHealthSlider()
     {
         //set slider value = to health
-        healthSlider.value = playerHealth.health;
+        healthSlider.value = PlayerHealth.health;
     }
 
     public void ActivateDeathScreen()
     {
-        
+       // if (PlayerHealth.health = 0);
     }
+
+    
 }

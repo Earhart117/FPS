@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     UIManager uiManager;
 
     public float speed = 12f;
+    public float sprintSpeed = 18f;
     public float gravity = -9.81f;
     public float jumpHeight = 3f;
 
@@ -18,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     Vector3 velocity;
     bool isGrounded;
 
+
     // Update is called once per frame
 
     private void Awake()
@@ -25,19 +27,27 @@ public class PlayerMovement : MonoBehaviour
         uiManager = FindObjectOfType<UIManager>();
     }
     void Update()
-    {
+    {//move
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
          if(isGrounded && velocity.y <0)
         {
             velocity.y = -2f;
         }
+
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
-
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            speed = sprintSpeed;
+        }
+        else
+        {
+            speed = 12f;
+        }
         Vector3 move = transform.right * x + transform.forward * z;
         controller.Move(move * speed * Time.deltaTime);
-
+        // jump
         if(Input.GetButtonDown("Jump") && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
@@ -46,6 +56,8 @@ public class PlayerMovement : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
 
         controller.Move(velocity * Time.deltaTime);
+
+        
     }
 
     public void kill()

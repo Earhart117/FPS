@@ -5,15 +5,30 @@ using UnityEngine;
 public class KillZone : MonoBehaviour
 {
     [SerializeField] GameObject _player;
-
+    /// PlayerHealth playerHealth;
+    int damage = 1;
+    bool isIn;
     private void OnTriggerEnter(Collider other)
     {
-        PlayerHealth playerHealth
-            = other.gameObject.GetComponent<PlayerHealth>();
-
-        if (playerHealth != null)
+        if (other.tag == "Player")
         {
-            playerHealth.health = playerHealth.health - 15;
+
+            Debug.Log("being damaged");
+            Debug.Log("is in");
+
         }
+
+
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            other.gameObject.GetComponent<PlayerHealth>().DamagePlayer(damage);
+
+        }
+       
+
     }
 }

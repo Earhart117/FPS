@@ -6,9 +6,10 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public int health = 100;
+    public static int health = 100;
 
     UIManager uiManager;
+    public GameObject deathMenuUI;
 
     private void Awake()
     {
@@ -19,6 +20,10 @@ public class PlayerHealth : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.K))
         {
             DamagePlayer(12);
+        }
+        if (health == 0)
+        {
+            Kill();
         }
     }
     public void DamagePlayer(int _damageAmount)
@@ -34,5 +39,16 @@ public class PlayerHealth : MonoBehaviour
         //update slider
         uiManager.UpdateHealthSlider();
     }
-    
+    public void Kill()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Pause();
+        UnityEngine.Debug.Log("player set inactive, ur dead");
+    }
+    public void Pause()
+    {
+        deathMenuUI.SetActive(true);
+        Time.timeScale = 0f;
+        
+    }
 }

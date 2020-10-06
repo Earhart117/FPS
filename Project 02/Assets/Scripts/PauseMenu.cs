@@ -9,6 +9,7 @@ public class PauseMenu : MonoBehaviour
 
     public GameObject pauseMenuUI;
     Level01Controller _currentScore;
+    
 
 
     private static int currentScore;
@@ -16,7 +17,7 @@ public class PauseMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       if (Input.GetKeyDown(KeyCode.E))
+       if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (gameIsPaused)
             {
@@ -48,6 +49,8 @@ public class PauseMenu : MonoBehaviour
     public void LoadMenu()
     {
         Time.timeScale = 1f;
+        //clear dead screen
+        
         currentScore = Level01Controller._currentScore;
         Debug.Log("Loading menu..");
         //compare score to high score
@@ -59,6 +62,7 @@ public class PauseMenu : MonoBehaviour
             Debug.Log("New high score: " + currentScore);
             Level01Controller._currentScore = currentScore;
         }
+        
         //load main menu
         SceneManager.LoadScene("MainMenu");
     }

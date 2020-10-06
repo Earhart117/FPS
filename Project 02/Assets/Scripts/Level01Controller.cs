@@ -7,22 +7,19 @@ using UnityEngine.UI;
 public class Level01Controller : MonoBehaviour
 {
     [SerializeField] Text _currentScoreTextView;
+    public GameObject deathMenuUI;
 
     public static int _currentScore;
 
     private void Start()
     {
-        
+        PlayerHealth.health = 100;
+        Time.timeScale = 1f;
+        //deathMenuUI.SetActive(false);
     }
     private void Update()
     {
-        //TO DO: bring up pop up menu
-        //if (Input.GetKeyDown(KeyCode.Escape))
-        //{
-          //  ExitLevel();
-       // }
-        //increase score
-        //TO DO: replace w implementation
+        
         if(Input.GetKeyDown(KeyCode.Q))
         {
             IncreaseScore(5);
