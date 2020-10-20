@@ -13,7 +13,7 @@ public class KillZone : MonoBehaviour
         if (other.tag == "Player")
         {
 
-            Debug.Log("being damaged");
+           
             Debug.Log("is in");
 
         }
@@ -26,7 +26,7 @@ public class KillZone : MonoBehaviour
         if (other.tag == "Player")
         {
             other.gameObject.GetComponent<PlayerHealth>().DamagePlayer(damage);
-
+            Debug.Log("being damaged");
         }
        
 

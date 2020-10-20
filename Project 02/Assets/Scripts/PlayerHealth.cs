@@ -8,6 +8,10 @@ public class PlayerHealth : MonoBehaviour
 {
     public static int health = 100;
 
+    public AudioSource _damaged;
+    public AudioSource _dead;
+    public bool isActive;
+
     UIManager uiManager;
     public GameObject deathMenuUI;
 
@@ -23,32 +27,57 @@ public class PlayerHealth : MonoBehaviour
         }
         if (health == 0)
         {
+           
             Kill();
+
         }
     }
     public void DamagePlayer(int _damageAmount)
      {
 
         //subtract health6
+        _damaged.Play();
         health -= _damageAmount;
         if(health<0)
         {
             health = 0;
-            
+            _dead.Play();
+        }
+        //update slider
+        uiManager.UpdateHealthSlider();
+    }
+    public void HealthPack(int _healAmount)
+    {
+
+        //subtract health6
+        _damaged.Play();
+        health += _healAmount;
+        if (health > 100)
+        {
+            health = 100;
+
         }
         //update slider
         uiManager.UpdateHealthSlider();
     }
     public void Kill()
     {
+        
         Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        isActive = true;
+        
         Pause();
         UnityEngine.Debug.Log("player set inactive, ur dead");
+        
     }
     public void Pause()
     {
-        deathMenuUI.SetActive(true);
-        Time.timeScale = 0f;
-        
+        if (isActive == true)
+        {
+            deathMenuUI.SetActive(true);
+            Cursor.visible = true;
+            Time.timeScale = 0f;
+        }
     }
 }

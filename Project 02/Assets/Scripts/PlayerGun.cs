@@ -8,7 +8,6 @@ public class PlayerGun : MonoBehaviour
     
     public AudioSource _gunShot;
     PlayerHealth health;
-
     public bool isDead = false;
     // Start is called before the first frame update
     void Start()
@@ -19,13 +18,14 @@ public class PlayerGun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        int pHealth = PlayerHealth.health;
         if (PlayerHealth.health == 0)
         {
             isDead = true;
-            Debug.Log("is dead");
+            Debug.Log("player is dead");
         }
         
-        if (Input.GetKeyDown(KeyCode.Mouse0)&& isDead == false)
+        if (Input.GetKeyDown(KeyCode.Mouse0)&& pHealth >0 && PauseMenu.gameIsPaused == false)
             {
             playerGun.Emit(10);
             _gunShot.Play();

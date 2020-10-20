@@ -2,21 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
-[RequireComponent (typeof(NavMeshAgent))]
+[RequireComponent(typeof(NavMeshAgent))]
 public class EnemyShooter : MonoBehaviour
 {
     [SerializeField] GameObject enemy;
+    [SerializeField] Text _currentScoreTextView;
+    public AudioSource _enemyFire;
     protected NavMeshAgent Agent;
     public float speed;
     public float stoppingDistance;
     public float retreatDistance;
+    public float attackDistance = 10f;
+    public float followDistance = 20f;
     public Transform player;
     int health = 100;
+    int points = 20;
+    [Range(0f, 1f)]
+    public float attackProbability = .5f;
 
-    public GameObject projectile;
-    private float timeBtwShots;
+    [Range(0f, 1f)]
+    public float hitAccuracy = .5f;
+
+    [SerializeField] GameObject projectilePrefab;
+    public GameObject _projectile;
+
+    public float timeBtwShots;
     public float startTimeBtwShots;
+    Level01Controller level01Controller;
 
     private void Start()
     {
@@ -34,37 +48,61 @@ public class EnemyShooter : MonoBehaviour
 
     public void Update()
     {
-        if (Vector3.Distance(transform.position, player.position) > stoppingDistance)
+        if (Agent.enabled)
         {
-            transform.position = Vector3.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
-        }
-        else if (Vector3.Distance(transform.position, player.position) < stoppingDistance && Vector3.Distance(transform.position, player.position) > retreatDistance)
-        {
-            transform.position = this.transform.position;
-        }
-            else if(Vector3.Distance(transform.position, player.position) < retreatDistance)
+            float dist = Vector3.Distance(player.transform.position, this.transform.position);
+            bool shoot = false;
+            bool follow = (dist < followDistance);
+
+            if (follow)
+            {
+                float random = Random.Range(0f, 1f);
+                if (random > (1f - attackProbability) && (dist <= attackDistance) && (timeBtwShots <= 0))
                 {
-            transform.position = Vector3.MoveTowards(transform.position, player.position, -speed * Time.deltaTime);
+                    shoot = true;
+                    _enemyFire.Play();
+                    _projectile = Instantiate(projectilePrefab) as GameObject;
+                    _projectile.transform.position = transform.TransformPoint(Vector3.forward * 1.5f);
+                    _projectile.transform.rotation = transform.rotation;
+                    // Instantiate(projectile, transform.position, Quaternion.identity);
+                    timeBtwShots = startTimeBtwShots;
+                    //Debug.Log("calling first if");
+                }
+                else
+                {
+                    timeBtwShots -= Time.deltaTime;
+                    //Debug.Log("calling else");
+                }
+                if (follow)
+                {
+                    Agent.SetDestination(player.transform.position);
+                }
+                if (!follow || shoot)
+                {
+                    Agent.SetDestination(transform.position);
                 }
 
-        if (timeBtwShots <=0)
-        {
-            Instantiate(projectile, transform.position, Quaternion.identity);
-            timeBtwShots = startTimeBtwShots;
-        }
-        else
-        {
-            timeBtwShots -= Time.deltaTime;
+                else if (Vector3.Distance(transform.position, player.position) < retreatDistance)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, player.position, -speed * Time.deltaTime);
+
+                }
+            }
+            if (health <= 0)
+            {
+
+                
+                KillEnemy();
+
+            }
         }
 
-        if (health <=0)
-        {
-            KillEnemy();
-        }
-    }
 
-    void KillEnemy()
-    {
-        enemy.SetActive(false);
+
+        void KillEnemy()
+        {
+            enemy.SetActive(false);
+        }
+    
     }
 }

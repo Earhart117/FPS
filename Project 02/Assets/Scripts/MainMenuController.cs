@@ -27,4 +27,9 @@ public class MainMenuController : MonoBehaviour
         _highScoreTextView.text = highScore.ToString();
         Debug.Log("HighScore Reset");
     }
+    public void QuitGame()
+    {
+        Debug.Log("Quitting game..");
+        Application.Quit();
+    }
 }

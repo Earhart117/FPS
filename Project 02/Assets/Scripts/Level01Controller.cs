@@ -7,15 +7,24 @@ using UnityEngine.UI;
 public class Level01Controller : MonoBehaviour
 {
     [SerializeField] Text _currentScoreTextView;
+    [SerializeField] GameObject healthPack;
     public GameObject deathMenuUI;
+    [SerializeField] AudioClip _lvlSong;
 
     public static int _currentScore;
 
     private void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         PlayerHealth.health = 100;
         Time.timeScale = 1f;
         //deathMenuUI.SetActive(false);
+        if (_lvlSong != null)
+        {
+            AudioManager.Instance.PlaySong(_lvlSong);
+        }
+
     }
     private void Update()
     {
@@ -24,7 +33,7 @@ public class Level01Controller : MonoBehaviour
         {
             IncreaseScore(5);
         }
-
+        
     }
     public void ExitLevel()
     {

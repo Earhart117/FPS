@@ -7,6 +7,7 @@ public class DeathMenu : MonoBehaviour
     
     Level01Controller _currentScore;
     public static bool playerIsDead = false;
+    bool isActive;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,8 +21,12 @@ public class DeathMenu : MonoBehaviour
             if (playerIsDead)
             {
                 Cursor.lockState = CursorLockMode.Locked;
-                //Resume();
-            }
+            Cursor.visible = false;
+            isActive = true;
+            Debug.Log("is active = true");
+
+            //Resume();
+        }
             else
             {
                 

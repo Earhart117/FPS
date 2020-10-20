@@ -7,20 +7,27 @@ public class Projectile : MonoBehaviour
 {
 
     public float speed;
-
-    private Transform player;
-    private Vector3 target;
+    PlayerHealth playerHealth;
+    public int bulletDamage;
+    public AudioSource _hitPlayer;
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-
-        target = new Vector3(player.position.x, player.position.y);
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
+        transform.Translate(0, 0, speed * Time.deltaTime);
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            Debug.Log("Player hit");
+            _hitPlayer.Play();
+            other.GetComponent<PlayerHealth>().DamagePlayer(bulletDamage);
+            Destroy(this.gameObject);
+        }
     }
 }
